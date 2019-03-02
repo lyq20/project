@@ -1,17 +1,6 @@
 <template>
   <div id="app">
-    <el-row :gutter="20">
-      <el-col :span="16">
-        <div class="grid-content bg-purple">
-          欢迎
-        </div>
-      </el-col>
-      <el-col :span="8">
-        <div class="grid-content bg-purple">
-          用户
-        </div>
-      </el-col>
-    </el-row>
+    <router-link/>
   </div>
 </template>
 
