@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
 
 Vue.use(Router)
 
@@ -9,17 +8,51 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
+      path: '/login',
       name: 'Login',
-      component: Home
+      component: () => import('./views/login.vue')
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('./views/home.vue')
+      path: '/',
+      name: 'Layout',
+      component: () => import('./views/layout.vue'),
+      children: [
+        {
+          path: 'home',
+          name: 'Home',
+          component: () => import('./views/Home/home.vue')
+        },
+        {
+          path: 'orderList',
+          name: 'OrderList',
+          component: () => import('./views/orderList/orderList.vue')
+        },
+        {
+          path: 'menuList',
+          name: 'MenuList',
+          component: () => import('./views/menuList/menuList.vue')
+        },
+        {
+          path: 'typeList',
+          name: 'TypeList',
+          component: () => import('./views/typeList/typeList.vue')
+        },
+        {
+          path: 'member',
+          name: 'Member',
+          component: () => import('./views/member/Member.vue')
+        },
+        {
+          path: 'message',
+          name: 'Message',
+          component: () => import('./views/message/messageList.vue')
+        },
+        {
+          path: 'admin',
+          name: 'adminList',
+          component: () => import('./views/admin/adminList.vue')
+        }
+      ]
     }
   ]
 })
