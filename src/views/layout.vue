@@ -7,12 +7,12 @@
           router
           :default-active="$router.path"
           class="el-menu-vertical-demo"
-          @open="handleOpen"
-          @close="handleClose"
           background-color="#011f46"
           text-color="#fff"
           active-text-color="#ffd04b"
         >
+        <!-- @open="handleOpen"
+          @close="handleClose" -->
           <el-menu-item index="/home">
             <i class="el-icon-menu"></i>
             <span slot="title">首页</span>
