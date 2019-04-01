@@ -2,17 +2,18 @@
   <el-container style="height: 100%;">
     <el-aside width="200px" height="100%" style="background-color: #011f46">
       <el-col :span="24">
-        <h3>自定义颜色</h3>
+        <h3>欢迎光临本餐厅</h3>
         <el-menu
           router
           :default-active="$router.path"
           class="el-menu-vertical-demo"
           background-color="#011f46"
+          :unique-opened="true"
           text-color="#fff"
           active-text-color="#ffd04b"
         >
-        <!-- @open="handleOpen"
-          @close="handleClose" -->
+          <!-- @open="handleOpen"
+          @close="handleClose"-->
           <el-menu-item index="/home">
             <i class="el-icon-menu"></i>
             <span slot="title">首页</span>
@@ -50,10 +51,11 @@
           <i class="el-icon-setting" style="margin-right: 15px"></i>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>查看个人信息</el-dropdown-item>
-            <el-dropdown-item>退出账户</el-dropdown-item>
+            <el-dropdown-item @click="loginOut()">退出账户</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <span>系统管理员</span>
+        <span>退出</span>
       </el-header>
       <el-main>
         <router-view/>
@@ -63,13 +65,27 @@
 </template>
 <script>
 export default {
-  name: "Home"
+  name: "Home",
+  methods: {
+    loginOut() {
+      this.$router.push({
+        path: "/login"
+      });
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
 #about {
   width: 100%;
   height: 100%;
+}
+h3 {
+  color: #fff;
+  height: 56px;
+  font-size: 18px;
+  padding: 0 20px;
+  line-height: 56px;
 }
 .el-header {
   background-color: #fff;
@@ -78,6 +94,15 @@ export default {
   i {
     font-size: 16px;
     color: #000 !important;
+  }
+  span {
+    display: inline-block;
+    text-align: right;
+    width: 80px;
+    cursor: pointer;
+  }
+  span:hover {
+    color: #a5ccf4;
   }
 }
 /deep/ .el-menu {
