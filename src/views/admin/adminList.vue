@@ -3,6 +3,7 @@
     <!-- 管理员管理 -->
     <FormItem :options="options"></FormItem>
     <el-card>
+      <el-button class="cardBtn" type="primary" @click="orderProcess()" size="mini">添加管理员</el-button>
       <el-table :data="tableData" style="width: 100%">
         <el-table-column prop="date" label="日期" width="180"></el-table-column>
         <el-table-column prop="name" label="姓名" width="180"></el-table-column>
@@ -10,7 +11,6 @@
         <el-table-column prop="status" label="订单状态"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" plain @click="orderProcess(scope.row.id)">订单处理</el-button>
             <el-button
               size="mini"
               type="primary"
@@ -39,23 +39,19 @@
         ></el-pagination>
       </div>
     </el-card>
-    <el-dialog title="订单处理" :visible.sync="dialogOrderProce" width="35%">
+    <el-dialog title="添加管理员" :visible.sync="dialogOrderProce" width="35%">
       <el-form :model="dialogFormData">
-        <el-form-item label="客户姓名" label-width="80px">
+        <el-form-item label="用户名" label-width="80px">
           <el-input v-model="dialogFormData.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="订单类型" label-width="80px">
-          <el-input v-model="dialogFormData.style" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="地址" label-width="80px" :disabled="true">
+        <el-form-item label="手机号" label-width="80px">
           <el-input v-model="dialogFormData.phone" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="订单状态" label-width="80px">
-          <el-select v-model="dialogFormData.status" placeholder="请选择状态">
-            <el-option label="未接单" value="1"></el-option>
-            <el-option label="处理中" value="2"></el-option>
-            <el-option label="已完成" value="3"></el-option>
-          </el-select>
+        <el-form-item label="密码" label-width="80px">
+          <el-input v-model="dialogFormData.password" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" label-width="80px" :disabled="true">
+          <el-input v-model="dialogFormData.passwordTwo" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -63,22 +59,22 @@
         <el-button type="primary" @click="orderSure">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="订单编辑" :visible.sync="dialogOrderEditor" width="35%">
+    <el-dialog title="管理员编辑" :visible.sync="dialogOrderEditor" width="35%">
       <el-form :model="dialogFormDataEditor" class="editor">
-        <el-form-item label="客户姓名" label-width="80px">
+        <el-form-item label="用户名" label-width="80px">
           <el-input v-model="dialogFormDataEditor.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="联系方式" label-width="80px">
-          <el-input v-model="dialogFormDataEditor.phone" autocomplete="off"></el-input>
+        <el-form-item label="手机号" label-width="80px">
+          <el-input v-model="dialogFormData.phone" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="订单类型" label-width="80px">
-          <el-select v-model="dialogFormDataEditor.style" placeholder="请选择订单类型">
-            <el-option label="红烧排骨" value="paigu"></el-option>
-            <el-option label="葱爆羊肉" value="yangrou"></el-option>
-          </el-select>
+        <el-form-item label="旧密码" label-width="80px">
+          <el-input v-model="dialogFormDataEditor.oldpassword" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="详细地址" label-width="80px">
-          <el-input v-model="dialogFormDataEditor.address" autocomplete="off"></el-input>
+        <el-form-item label="新密码" label-width="80px">
+          <el-input v-model="dialogFormDataEditor.newpassword" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" label-width="80px">
+          <el-input v-model="dialogFormDataEditor.passwordTwo" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -139,16 +135,15 @@ export default {
       dialogFormData: {
         name: "",
         phone: "",
-        address: "",
-        style: "",
-        status: ""
+        password: "",
+        passwordTwo: ""
       },
       dialogFormDataEditor: {
         name: "",
         phone: "",
-        address: "",
-        style: "",
-        status: ""
+        oldpassword: "",
+        newpassword: "",
+        passwordTwo: ""
       }
     };
   },
@@ -271,5 +266,8 @@ export default {
 }
 /deep/ .el-dialog__footer {
   padding: 0 30px 20px;
+}
+.cardBtn {
+  float: right;
 }
 </style>

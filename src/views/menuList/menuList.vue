@@ -3,7 +3,7 @@
     <!-- 菜单管理系统 -->
     <FormItem :options="options"></FormItem>
     <el-card>
-      <el-button type="primary" @click="addMenu()">添加菜单</el-button>
+      <el-button class="cardBtn" type="primary" @click="addMenu()" size="mini">添加菜单</el-button>
       <el-table :data="tableData" style="width: 100%">
         <el-table-column prop="date" label="日期" width="180"></el-table-column>
         <el-table-column prop="name" label="姓名" width="180"></el-table-column>
@@ -154,3 +154,9 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.cardBtn {
+  float: right;
+}
+</style>
+
