@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 订单管理系统 -->
-    <FormItem></FormItem>
+    <FormItem :options="options"></FormItem>
     <el-card>
       <el-table :data="tableData" style="width: 100%">
         <el-table-column prop="date" label="日期" width="180"></el-table-column>
@@ -28,13 +28,14 @@
       </el-table>
       <div class="block" text-align="right">
         <el-pagination
+          :current-page="currentPage"
+          :page-sizes="[10, 20, 50]"
+          :page-size="pageSize"
+          :total="50"
+          background
+          layout="total, sizes, prev, pager, next, jumper"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="currentPage4"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
         ></el-pagination>
       </div>
     </el-card>
@@ -58,8 +59,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogClose">取 消</el-button>
-        <el-button type="primary" @click="dialogSure">确 定</el-button>
+        <el-button @click="orderClose">取 消</el-button>
+        <el-button type="primary" @click="orderSure">确 定</el-button>
       </div>
     </el-dialog>
     <el-dialog title="订单编辑" :visible.sync="dialogOrderEditor" width="35%">
@@ -88,7 +89,7 @@
   </div>
 </template>
 <script>
-import FormItem from "../../common/formItem";
+import FormItem from "../../common/formItem.vue";
 export default {
   name: "OrderList",
   components: {
@@ -96,10 +97,9 @@ export default {
   },
   data() {
     return {
-      currentPage1: 5,
-      currentPage2: 5,
-      currentPage3: 5,
-      currentPage4: 4,
+      options: {},
+      pageSize: 10,
+      currentPage: 1,
       dialogOrderProce: false, // 订单处理弹框
       dialogOrderEditor: false, // 订单编辑弹框
       tableData: [
@@ -132,45 +132,124 @@ export default {
           status: "已完成"
         }
       ],
+      searchFormData: {
+        name: "",
+        status: ""
+      },
       dialogFormData: {
         name: "",
         phone: "",
         address: "",
-        style: '',
+        style: "",
         status: ""
       },
       dialogFormDataEditor: {
         name: "",
         phone: "",
         address: "",
-        style: '',
+        style: "",
         status: ""
       }
     };
   },
+  created() {
+    this.options = {
+      buttons: [
+        {
+          label: "重置",
+          type: "primary",
+          clearForm: true,
+          click: () => {
+            this.resetSearch();
+          }
+        },
+        {
+          label: "查询",
+          type: "primary",
+          click: () => {
+            this.getListFun();
+          }
+        }
+      ],
+      formData: [
+        {
+          type: "input",
+          label: "姓名",
+          placeholder: "请输入姓名",
+          value: this.searchFormData.name,
+          change: val => {
+            this.searchFormData.proper = val;
+            console.log("change", val, this.searchFormData.proper);
+          }
+        },
+        {
+          type: "select",
+          label: "订单状态",
+          placeholder: "请选择订单状态",
+          value: this.searchFormData.status,
+          options: [
+            {
+              value: "1",
+              label: "未接单"
+            },
+            {
+              value: "2",
+              label: "处理中"
+            },
+            {
+              value: "3",
+              label: "已完成"
+            }
+          ]
+        }
+      ]
+    };
+  },
+  mounted() {
+    console.log("页面刚进来时会执行");
+  },
   methods: {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
+      this.pageSize = val;
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.currentPage = val;
     },
-    // 订单处理
+    // 查询事件
+    getListFun() {
+      console.log("查询");
+    },
+    // 重置按钮
+    resetSearch() {
+      console.log("重置");
+    },
+    // 订单处理按钮
     orderProcess() {
       this.dialogOrderProce = true;
     },
     // 订单处理弹框确认
     dialogSure() {
-      let params = {}
-      
+      let params = {};
+      this.dialogOrderProce = false;
     },
-    // 弹框取消
-    dialogClose() {},
-    // 订单编辑
+    // 订单处理弹框取消
+    dialogClose() {
+      this.dialogOrderProce = false;
+    },
+    // 订单编辑按钮
     handleEdit() {
       this.dialogOrderEditor = true;
     },
     // 订单编辑确认事件
+    orderSure() {
+      this.dialogOrderEditor = true;
+    },
+    // 订单编辑弹框内取消事件
+    orderClose() {
+      this.dialogOrderEditor = false;
+    },
     // 删除
     handleDelete(index) {
       console.log(index);

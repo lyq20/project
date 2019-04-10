@@ -8,7 +8,7 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/Login',
+      path: '/login',
       name: 'Login',
       component: () => import('./views/login.vue')
     },
@@ -32,11 +32,6 @@ export default new Router({
           path: 'menuList',
           name: 'MenuList',
           component: () => import('./views/menuList/menuList.vue')
-        },
-        {
-          path: 'typeList',
-          name: 'TypeList',
-          component: () => import('./views/typeList/typeList.vue')
         },
         {
           path: 'member',

@@ -1,26 +1,53 @@
 <template>
   <el-card>
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label="审批人">
-        <el-input v-model="formInline.user" placeholder="审批人"></el-input>
-      </el-form-item>
-      <el-form-item label="活动区域">
-        <el-select v-model="formInline.region" placeholder="活动区域">
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
+    <el-form :inline="true" :model="options" class="demo-form-inline">
+      <el-form-item v-for="(item, index) in options.formData" :key="index" :label="item.label">
+        <el-input
+          v-if="item.type === 'input'"
+          v-model="item.value"
+          :class="item.class"
+          clearable
+          @clear="clear(item)"
+          @change="change(item)"
+          :placeholder="item.placeholder"
+        />
+        <el-select
+          v-if="item.type === 'select'"
+          v-model="item.value"
+          :placeholder="item.placeholder"
+          clearable
+          @visible-change="(val) => visibleChange(item)"
+          @change="(val)=>item.change ? item.change(val) : change"
+          @select="(val)=>item.select ? item.select(val) : select"
+          @clear="clear(item)"
+        >
+          <el-option
+            v-for="option in item.options"
+            :key="option.value"
+            :label="option.label"
+            :value="option.value"
+          ></el-option>
         </el-select>
       </el-form-item>
     </el-form>
-    <el-form>
-      <el-form-item style="float: right">
-        <el-button style="float: right; margin-left: 10px;" @click="onSubmit">重置</el-button>
-        <el-button style="float: right" type="primary" @click="onSubmit">查询</el-button>
-      </el-form-item>
-    </el-form>
+    <el-row>
+      <el-col :span="24">
+        <el-button
+          v-for="button in options.buttons"
+          :key="button.label"
+          :type="button.type"
+          size="mini"
+          @click="clearFrom(button)"
+        >{{ button.label }}</el-button>
+      </el-col>
+    </el-row>
   </el-card>
 </template>
 <script>
 export default {
+  props: {
+    options: { type: Object }
+  },
   data() {
     return {
       formInline: {
@@ -32,6 +59,35 @@ export default {
   methods: {
     onSubmit() {
       console.log("submit!");
+    },
+    change(item) {
+      if (item.change) {
+        item.change(item.value);
+      }
+    },
+    select(item) {
+      if (item.select) {
+        item.select(item.value);
+      }
+    },
+    clear(item) {
+      if (item.clear) {
+        item.clear(item.value);
+      }
+    },
+    clearFrom(item) {
+      if (item.clearFrom) {
+        let formData = this.options.formData;
+        for (let index = 0; index < formData.length; index++) {
+          formData[index].value = "";
+        }
+      }
+      item.click(item.value);
+    },
+    visibleChange(item) {
+      if (item.visibleChange) {
+        return item.visibleChange(item.value);
+      }
     }
   }
 };
@@ -54,5 +110,9 @@ export default {
       width: 100%;
     }
   }
+}
+.el-button {
+  float: right;
+  margin-right: 15px;
 }
 </style>

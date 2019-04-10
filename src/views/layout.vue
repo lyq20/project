@@ -26,10 +26,10 @@
             <i class="el-icon-message"></i>
             <span slot="title">菜单管理</span>
           </el-menu-item>
-          <el-menu-item index="/typeList">
+          <!-- <el-menu-item index="/typeList">
             <i class="el-icon-setting"></i>
             <span slot="title">类别管理</span>
-          </el-menu-item>
+          </el-menu-item>-->
           <el-menu-item index="/member">
             <i class="el-icon-printer"></i>
             <span slot="title">会员管理</span>
@@ -54,8 +54,8 @@
             <el-dropdown-item @click="loginOut()">退出账户</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <span>系统管理员</span>
-        <span>退出</span>
+        <span @mousedown="(e)=>down(e)">系统管理员</span>
+        <span @click="loginOut()">退出</span>
       </el-header>
       <el-main>
         <router-view/>
@@ -67,6 +67,9 @@
 export default {
   name: "Home",
   methods: {
+    down(e) {
+      console.log(e.target);
+    },
     loginOut() {
       this.$router.push({
         path: "/login"
